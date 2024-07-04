@@ -33,28 +33,20 @@ public class RoomescapeController {
     @PostMapping("/reservations")
     @ResponseBody
     public ResponseEntity<Reservation> createReservation( @RequestBody Reservation reservation) {
-        Reservation newReservation = new Reservation(reservations.size() + 1, reservation.getName(), reservation.getDate(), reservation.getTime());
-        if (reservation.getName() == null || reservation.getName().trim().isEmpty() ||
-                reservation.getDate() == null || reservation.getDate().trim().isEmpty() ||
-                reservation.getTime() == null || reservation.getTime().trim().isEmpty()) {
-            throw new IllegalArgumentException("예약 정보가 부족합니다.");
-        }
-        reservations.add(newReservation);
-
+        RoomDAO.insert(reservation);
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Location", "/reservations/" + newReservation.getId());
-        return new ResponseEntity<>(newReservation,headers, HttpStatus.CREATED);
+
+        headers.add("Location", "/reservations/" + RoomDAO.getId(reservation));
+        return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/reservations/{id}")
     @ResponseBody
     public ResponseEntity<Reservation> deleteReservation(@PathVariable int id){
-        for (Reservation reservation : reservations) {
-            if (reservation.getId() == id) {
-                reservations.remove(reservation);
-                return new ResponseEntity<>(reservation, HttpStatus.NO_CONTENT);
+            if (RoomDAO.findById(id) != null) {
+                RoomDAO.delete(id);
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
-        }
         // 예약이 없는 경우 Exception 발생
         throw new IllegalArgumentException("삭제할 예약이 없습니다.");
     }

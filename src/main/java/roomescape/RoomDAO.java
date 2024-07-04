@@ -20,5 +20,24 @@ public class RoomDAO {
                 resultSet.getString("time")
         ));
     }
+    public void insert(Reservation reservation) {
+        jdbcTemplate.update("INSERT INTO reservation (name, date, time) VALUES (?, ?, ?)",
+                reservation.getName(), reservation.getDate(), reservation.getTime());
+    }
+    public void delete(int id) {
+        jdbcTemplate.update("DELETE FROM reservation WHERE id = ?", id);
+    }
+    public int getId(Reservation reservation) {
+        return jdbcTemplate.queryForObject("SELECT id FROM reservation WHERE name = ? AND date = ? AND time = ?",
+                Integer.class, reservation.getName(), reservation.getDate(), reservation.getTime());
+    }
+    public Reservation findById(int id) {
+        return jdbcTemplate.queryForObject("SELECT * FROM reservation WHERE id = ?", (resultSet, rowNum) -> new Reservation(
+                resultSet.getInt("id"),
+                resultSet.getString("name"),
+                resultSet.getString("date"),
+                resultSet.getString("time")
+        ), id);
+    }
 
 }
