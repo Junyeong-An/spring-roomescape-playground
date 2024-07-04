@@ -13,7 +13,6 @@ import java.util.List;
 public class RoomescapeController {
 
     private final RoomDAO RoomDAO;
-    private List<Reservation> reservations = new ArrayList<>();
 
     public RoomescapeController(RoomDAO roomDAO) {
         RoomDAO = roomDAO;
