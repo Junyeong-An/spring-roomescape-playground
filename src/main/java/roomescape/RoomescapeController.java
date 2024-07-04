@@ -12,18 +12,22 @@ import java.util.List;
 @Controller
 public class RoomescapeController {
 
+    private final RoomDAO RoomDAO;
     private List<Reservation> reservations = new ArrayList<>();
+
+    public RoomescapeController(RoomDAO roomDAO) {
+        RoomDAO = roomDAO;
+    }
 
     @GetMapping("/reservation")
     public String reservation() {
-
         return "reservation";
     }
 
     @GetMapping("/reservations")
     @ResponseBody
-    public ResponseEntity<List<Reservation>> reservations() {
-        return new ResponseEntity<>(reservations, HttpStatus.OK);
+    public ResponseEntity<List<Reservation>> getAllReservations(){
+        return new ResponseEntity<>(RoomDAO.findAll(), HttpStatus.OK);
     }
 
     @PostMapping("/reservations")
