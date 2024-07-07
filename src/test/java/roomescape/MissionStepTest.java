@@ -133,6 +133,7 @@ public class MissionStepTest {
         assertThat(reservations.size()).isEqualTo(count);
     }
 
+
     @DisplayName("7단계: 데이터 추가/삭제하기")
     @Test
     void 칠단계() {

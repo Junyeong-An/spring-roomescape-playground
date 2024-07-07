@@ -20,6 +20,7 @@ public class RoomDAO {
                 resultSet.getString("time")
         ));
     }
+
     public void insert(Reservation reservation) {
         jdbcTemplate.update("INSERT INTO reservation (name, date, time) VALUES (?, ?, ?)",
                 reservation.getName(), reservation.getDate(), reservation.getTime());
