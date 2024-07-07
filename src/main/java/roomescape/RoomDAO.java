@@ -7,10 +7,10 @@ import java.util.List;
 
 @Repository
 public class RoomDAO {
-    private static JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
     public RoomDAO(JdbcTemplate jdbcTemplate) {
-        RoomDAO.jdbcTemplate = jdbcTemplate;
+        this.jdbcTemplate = jdbcTemplate;
     }
     public List<Reservation> findAll() {
         return jdbcTemplate.query("SELECT * FROM reservation", (resultSet, rowNum) -> new Reservation(
