@@ -24,7 +24,7 @@ public class MissionStepTest {
 
     @DisplayName("1단계: 매핑 경로 확인")
     @Test
-    void 일단계() {
+    void verifyMappingPath() {
         RestAssured.given().log().all()
                 .when().get("/")
                 .then().log().all()
@@ -32,7 +32,7 @@ public class MissionStepTest {
     }
     @DisplayName("2단계: 예약 목록 조회")
     @Test
-    void 이단계() {
+    void retrieveReservationList() {
         RestAssured.given().log().all()
                 .when().get("/reservation")
                 .then().log().all()
@@ -47,7 +47,7 @@ public class MissionStepTest {
 
     @DisplayName("3단계: 예약 생성 및 조회")
     @Test
-    void 삼단계() {
+    void createAndRetrieveReservation() {
         Map<String, String> params = new HashMap<>();
         params.put("name", "브라운");
         params.put("date", "2023-08-05");
@@ -81,7 +81,7 @@ public class MissionStepTest {
     }
     @DisplayName("4단계: 예외처리")
     @Test
-    void 사단계() {
+    void handleExceptions() {
         Map<String, String> params = new HashMap<>();
         params.put("name", "브라운");
         params.put("date", "");
@@ -107,7 +107,7 @@ public class MissionStepTest {
 
     @DisplayName("5단계: 데이터베이스 적용하기")
     @Test
-    void 오단계() {
+    void applyDatabase() {
         try (Connection connection = jdbcTemplate.getDataSource().getConnection()) {
             assertThat(connection).isNotNull();
             assertThat(connection.getCatalog()).isEqualTo("DATABASE");
@@ -119,7 +119,7 @@ public class MissionStepTest {
 
     @DisplayName("6단계: 데이터 조회하기")
     @Test
-    void 육단계() {
+    void retrieveDataFromDatabase() {
         jdbcTemplate.update("INSERT INTO reservation (name, date, time) VALUES (?, ?, ?)", "브라운", "2023-08-05", "15:40");
 
         List<Reservation> reservations = RestAssured.given().log().all()
@@ -136,7 +136,7 @@ public class MissionStepTest {
 
     @DisplayName("7단계: 데이터 추가/삭제하기")
     @Test
-    void 칠단계() {
+    void addAndDeleteData() {
         Map<String, String> params = new HashMap<>();
         params.put("name", "브라운");
         params.put("date", "2023-08-05");
