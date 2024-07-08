@@ -31,6 +31,9 @@ public class RoomescapeController {
     @PostMapping("/reservations")
     @ResponseBody
     public ResponseEntity<Reservation> createReservation( @RequestBody Reservation reservation) {
+        if (reservation.getName() == null || reservation.getDate() == null || reservation.getTime() == null) {
+            throw new IllegalArgumentException("예약 정보가 부족합니다.");
+        }
         RoomDAO.insert(reservation);
         HttpHeaders headers = new HttpHeaders();
 
