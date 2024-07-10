@@ -1,8 +1,9 @@
-package roomescape;
+package roomescape.dao;
 
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import roomescape.domain.Reservation;
 
 import java.util.List;
 

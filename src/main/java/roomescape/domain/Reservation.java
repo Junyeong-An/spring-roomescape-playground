@@ -1,6 +1,4 @@
-package roomescape;
-
-import jakarta.annotation.Generated;
+package roomescape.domain;
 
 public class Reservation {
     private int id;
