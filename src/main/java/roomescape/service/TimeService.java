@@ -30,4 +30,8 @@ public class TimeService {
     public void deleteTime(int id) {
         timeDAO.delete(id);
     }
+
+    public Time findByTime(String time) {
+        return timeDAO.findByTime(time);
+    }
 }

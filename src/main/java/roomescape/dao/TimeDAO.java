@@ -1,5 +1,6 @@
 package roomescape.dao;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import roomescape.domain.Reservation;
@@ -40,5 +41,15 @@ public class TimeDAO {
 
     public void delete(int id) {
         jdbcTemplate.update("DELETE FROM time WHERE id = ?", id);
+    }
+
+    public Time findByTime(String time) {
+        try {
+            return jdbcTemplate.queryForObject("SELECT id, time FROM time WHERE time = ? LIMIT 1",
+                    (resultSet, rowNum) -> new Time(resultSet.getInt("id"), resultSet.getString("time")),
+                    time);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 }

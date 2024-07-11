@@ -165,7 +165,7 @@ public class MissionStepTest {
 
     @DisplayName("8단계: 시간 관리 기능")
     @Test
-    void 팔단계() {
+    void testTimeManagementFunctionality() {
         Map<String, String> params = new HashMap<>();
         params.put("time", "10:00");
 
@@ -189,6 +189,19 @@ public class MissionStepTest {
                 .statusCode(204);
     }
 
+    @DisplayName("9단계: 기존 코드 수정")
+    @Test
+    void testInvalidTimeReservation() {
+        Map<String, String> reservation = new HashMap<>();
+        reservation.put("name", "브라운");
+        reservation.put("date", "2023-08-05");
+        reservation.put("time", "10:00");
 
-
+        RestAssured.given().log().all()
+                .contentType(ContentType.JSON)
+                .body(reservation)
+                .when().post("/reservations")
+                .then().log().all()
+                .statusCode(400);
+    }
 }

@@ -5,30 +5,35 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 import roomescape.domain.Time;
-import roomescape.dto.TimeDto;
 import roomescape.domain.Reservation;
 import roomescape.dao.RoomDAO;
 import roomescape.dto.ReservationDto;
+import roomescape.service.ReservationService;
 import roomescape.service.TimeService;
 
+import java.net.URI;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Controller
 public class RoomescapeController {
 
-    private final roomescape.dao.RoomDAO RoomDAO;
-    private final TimeService TimeService;
+    private final RoomDAO RoomDAO;
+    private final TimeService timeService;
+    private final ReservationService reservationService;
 
-    public RoomescapeController(RoomDAO roomDAO, TimeService timeService) {
-        RoomDAO = roomDAO;
-        TimeService = timeService;
+    public RoomescapeController(RoomDAO roomDAO, TimeService timeService, ReservationService reservationService) {
+        this.RoomDAO = roomDAO;
+        this.timeService = timeService;
+        this.reservationService = reservationService;
     }
 
     @GetMapping("/reservation")
     public String reservation() {
-        return "reservation";
+        return "new-reservation";
     }
 
     @GetMapping("/reservations")
@@ -41,17 +46,23 @@ public class RoomescapeController {
     }
 
     @PostMapping("/reservations")
-    @ResponseBody
-    public ResponseEntity<ReservationDto> createReservation( @RequestBody ReservationDto reservationDto) {
-        if (reservationDto.name() == null || reservationDto.date() == null || reservationDto.time() == null) {
-            throw new IllegalArgumentException("예약 정보가 부족합니다.");
-        }
-        Reservation reservation = new Reservation(0, reservationDto.name(), reservationDto.date(), reservationDto.time());
-        RoomDAO.insert(reservation);
-        HttpHeaders headers = new HttpHeaders();
+    public ResponseEntity<?> createReservation(@RequestBody Map<String, String> reservationDto) {
+        String name = reservationDto.get("name");
+        String date = reservationDto.get("date");
+        String timeString = reservationDto.get("time");
 
-        headers.add("Location", "/reservations/" + RoomDAO.getId(reservation));
-        return new ResponseEntity<>(reservationDto,headers, HttpStatus.CREATED);
+        Time time = timeService.findByTime(timeString);
+        if (time == null) {
+            return ResponseEntity.badRequest().body("잘못된 시간입니다.");
+        }
+
+        Reservation reservation = new Reservation(0, name, date, time);
+        reservationService.addReservation(reservation);
+        URI location = UriComponentsBuilder.fromPath("/reservations/{id}")
+                .buildAndExpand(RoomDAO.getId(reservation))
+                .toUri();
+
+        return ResponseEntity.created(location).body(reservation);
     }
 
 
