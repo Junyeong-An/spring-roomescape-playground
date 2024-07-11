@@ -29,4 +29,8 @@ public class Reservation {
     public Time getTime() {
         return time;
     }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 }

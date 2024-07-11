@@ -46,23 +46,16 @@ public class RoomescapeController {
     }
 
     @PostMapping("/reservations")
-    public ResponseEntity<?> createReservation(@RequestBody Map<String, String> reservationDto) {
-        String name = reservationDto.get("name");
-        String date = reservationDto.get("date");
-        String timeString = reservationDto.get("time");
-
-        Time time = timeService.findByTime(timeString);
-        if (time == null) {
-            return ResponseEntity.badRequest().body("잘못된 시간입니다.");
+    public ResponseEntity<?> createReservation(@RequestBody ReservationDto reservationDto) {
+        try {
+            Reservation reservation = reservationService.addReservation(reservationDto);
+            URI location = UriComponentsBuilder.fromPath("/reservations/{id}")
+                    .buildAndExpand(reservation.getId())
+                    .toUri();
+            return ResponseEntity.created(location).body(reservation);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
-
-        Reservation reservation = new Reservation(0, name, date, time);
-        reservationService.addReservation(reservation);
-        URI location = UriComponentsBuilder.fromPath("/reservations/{id}")
-                .buildAndExpand(RoomDAO.getId(reservation))
-                .toUri();
-
-        return ResponseEntity.created(location).body(reservation);
     }
 
 
