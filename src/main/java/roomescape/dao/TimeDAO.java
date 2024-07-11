@@ -3,9 +3,7 @@ package roomescape.dao;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import roomescape.domain.Reservation;
 import roomescape.domain.Time;
-import roomescape.dto.TimeDto;
 
 import java.util.List;
 

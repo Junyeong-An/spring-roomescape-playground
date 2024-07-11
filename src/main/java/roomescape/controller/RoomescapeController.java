@@ -1,12 +1,10 @@
 package roomescape.controller;
 
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
-import roomescape.domain.Time;
 import roomescape.domain.Reservation;
 import roomescape.dao.RoomDAO;
 import roomescape.dto.ReservationDto;
@@ -15,19 +13,16 @@ import roomescape.service.TimeService;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Controller
 public class RoomescapeController {
 
     private final RoomDAO RoomDAO;
-    private final TimeService timeService;
     private final ReservationService reservationService;
 
     public RoomescapeController(RoomDAO roomDAO, TimeService timeService, ReservationService reservationService) {
         this.RoomDAO = roomDAO;
-        this.timeService = timeService;
         this.reservationService = reservationService;
     }
 
@@ -58,8 +53,6 @@ public class RoomescapeController {
         }
     }
 
-
-
     @DeleteMapping("/reservations/{id}")
     @ResponseBody
     public ResponseEntity<Reservation> deleteReservation(@PathVariable int id){
@@ -70,7 +63,6 @@ public class RoomescapeController {
         // 예약이 없는 경우 Exception 발생
         throw new IllegalArgumentException("삭제할 예약이 없습니다.");
     }
-
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException e) {

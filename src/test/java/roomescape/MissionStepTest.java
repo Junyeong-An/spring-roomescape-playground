@@ -220,7 +220,6 @@ public class MissionStepTest {
                 break;
             }
         }
-
         assertThat(isJdbcTemplateInjected).isFalse();
     }
 }
