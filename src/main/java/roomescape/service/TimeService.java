@@ -4,8 +4,10 @@ import org.springframework.stereotype.Service;
 import roomescape.dao.TimeDAO;
 import roomescape.domain.Time;
 import roomescape.dto.TimeDto;
+import roomescape.dto.TimeResDto;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class TimeService {
@@ -15,23 +17,28 @@ public class TimeService {
         this.timeDAO = timeDAO;
     }
 
-    public Time addTime(TimeDto timeDto) {
+    public TimeResDto addTime(TimeDto timeDto) {
         Time time = new Time(0, timeDto.time());
         timeDAO.insert(time);
         int id = timeDAO.getId(time);
         time.setId(id);
-        return time;
+        return new TimeResDto(id, time.getTime());
     }
 
-    public List<Time> getAllTimes() {
-        return timeDAO.findAll();
+    public List<TimeResDto> getAllTimes() {
+        List<Time> times = timeDAO.findAll();
+        return times.stream()
+                .map(TimeResDto::from)
+                .collect(Collectors.toList());
     }
 
     public void deleteTime(int id) {
         timeDAO.delete(id);
     }
+    public TimeResDto findByTime(String time) {
+        Time times = timeDAO.findByTime(time);
+        return TimeResDto.from(times);
 
-    public Time findByTime(String time) {
-        return timeDAO.findByTime(time);
     }
+
 }
