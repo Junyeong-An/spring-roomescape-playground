@@ -210,6 +210,7 @@ public class MissionStepTest {
     @Autowired
     private RoomescapeController roomescapeController;
 
+    @DisplayName("10단계: 계층화 리팩터링")
     @Test
     void verifyJdbcTemplateNotInjected() {
         boolean isJdbcTemplateInjected = false;
