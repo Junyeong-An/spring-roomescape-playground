@@ -5,6 +5,7 @@ import roomescape.dao.RoomDAO;
 import roomescape.domain.Reservation;
 import roomescape.domain.Time;
 import roomescape.dto.ReservationDto;
+import roomescape.dto.TimeResDto;
 
 @Service
 public class ReservationService {
@@ -21,7 +22,8 @@ public class ReservationService {
         String date = reservationDto.date();
         String timeString = reservationDto.time().getTime();
 
-        Time time = timeService.findByTime(timeString);
+        TimeResDto timeResDto = timeService.findByTime(timeString);
+        Time time = new Time(timeResDto.id(), timeResDto.time());
         if (time == null) {
             throw new IllegalArgumentException("시간을 찾을 수 없습니다.");
         }
