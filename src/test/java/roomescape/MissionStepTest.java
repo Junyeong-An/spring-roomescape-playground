@@ -211,7 +211,7 @@ public class MissionStepTest {
     private RoomescapeController roomescapeController;
 
     @Test
-    void 십단계() {
+    void verifyJdbcTemplateNotInjected() {
         boolean isJdbcTemplateInjected = false;
 
         for (Field field : roomescapeController.getClass().getDeclaredFields()) {
