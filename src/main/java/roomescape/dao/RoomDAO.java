@@ -32,7 +32,7 @@ public class RoomDAO {
                 reservation.getName(), reservation.getDate(), reservation.getTime().getId());
     }
 
-    public void delete(int id) {
+    public void deletebyId(int id) {
         jdbcTemplate.update("DELETE FROM reservation WHERE id = ?", id);
     }
 

@@ -1,8 +1,8 @@
 package roomescape.domain;
 
 public class Time {
-    int id;
-    String time;
+    private int id;
+    private String time;
 
     public Time(int id, String time) {
         this.id = id;
