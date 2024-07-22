@@ -21,7 +21,6 @@ public class TimeService {
         Time time = new Time(0, timeDto.time());
         timeDAO.insert(time);
         int id = timeDAO.getId(time);
-        time.setId(id);
         return new TimeResDto(id, time.getTime());
     }
 

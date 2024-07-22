@@ -30,7 +30,5 @@ public class Reservation {
         return time;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+
 }

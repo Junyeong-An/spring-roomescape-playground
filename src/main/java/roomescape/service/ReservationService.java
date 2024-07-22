@@ -37,8 +37,6 @@ public class ReservationService {
 
         Reservation reservation = new Reservation(0, name, date, time);
         roomDAO.insert(reservation);
-        int id = roomDAO.getId(reservation);
-        reservation.setId(id);
         return reservation;
     }
 
