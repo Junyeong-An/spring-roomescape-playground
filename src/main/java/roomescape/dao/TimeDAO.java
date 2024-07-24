@@ -1,11 +1,10 @@
 package roomescape.dao;
 
-import org.springframework.dao.EmptyResultDataAccessException;
+import java.util.List;
+import java.util.Optional;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import roomescape.domain.Time;
-
-import java.util.List;
 
 @Repository
 public class TimeDAO {
@@ -20,15 +19,12 @@ public class TimeDAO {
                 time.getTime());
     }
 
-    public int getId(Time time) {
-        try {
-            return jdbcTemplate.queryForObject(
-                    "SELECT id FROM time WHERE time = ? LIMIT 1",
-                    Integer.class, time.getTime()
-            );
-        } catch (Exception e) {
-            throw new RuntimeException("찾는 id가 존재하지 않습니다!");
-        }
+    public Optional<Integer> getId(Time time) {
+        return jdbcTemplate.query(
+                "SELECT id FROM time WHERE time = ? LIMIT 1",
+                (rs, rowNum) -> rs.getInt("id"),
+                time.getTime()
+        ).stream().findFirst();
     }
 
     public List<Time> findAll() {
@@ -41,13 +37,11 @@ public class TimeDAO {
         jdbcTemplate.update("DELETE FROM time WHERE id = ?", id);
     }
 
-    public Time findByTime(String time) {
-        try {
-            return jdbcTemplate.queryForObject("SELECT id, time FROM time WHERE time = ? LIMIT 1",
-                    (resultSet, rowNum) -> new Time(resultSet.getInt("id"), resultSet.getString("time")),
-                    time);
-        } catch (EmptyResultDataAccessException e) {
-            return null;
-        }
+    public Optional<Time> findByTime(String time) {
+        return jdbcTemplate.query(
+                "SELECT id, time FROM time WHERE time = ? LIMIT 1",
+                (rs, rowNum) -> new Time(rs.getInt("id"), rs.getString("time")),
+                time
+        ).stream().findFirst();
     }
 }

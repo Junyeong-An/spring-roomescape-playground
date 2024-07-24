@@ -1,13 +1,12 @@
 package roomescape.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import roomescape.dao.TimeDAO;
 import roomescape.domain.Time;
 import roomescape.dto.TimeDto;
 import roomescape.dto.TimeResDto;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class TimeService {
@@ -20,7 +19,8 @@ public class TimeService {
     public TimeResDto addTime(TimeDto timeDto) {
         Time time = new Time(0, timeDto.time());
         timeDAO.insert(time);
-        int id = timeDAO.getId(time);
+        int id = timeDAO.getId(time)
+                .orElseThrow(() -> new IllegalArgumentException("Time ID를 찾을 수 없습니다."));
         return new TimeResDto(id, time.getTime());
     }
 
@@ -34,10 +34,11 @@ public class TimeService {
     public void deleteTime(int id) {
         timeDAO.delete(id);
     }
-    public TimeResDto findByTime(String time) {
-        Time times = timeDAO.findByTime(time);
-        return TimeResDto.from(times);
 
+    public TimeResDto findByTime(String time) {
+        Time timeResult = timeDAO.findByTime(time)
+                .orElseThrow(() -> new IllegalArgumentException("해당 시간이 존재하지 않습니다."));
+        return TimeResDto.from(timeResult);
     }
 
 }
