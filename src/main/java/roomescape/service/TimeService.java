@@ -35,7 +35,7 @@ public class TimeService {
 
     @Transactional
     public void deleteTime(int id) {
-        timeDAO.delete(id);
+        timeDAO.deleteById(id);
     }
 
     @Transactional(readOnly = true)
@@ -44,5 +44,4 @@ public class TimeService {
                 .orElseThrow(() -> new IllegalArgumentException("해당 시간이 존재하지 않습니다."));
         return TimeResDto.from(timeResult);
     }
-
 }

@@ -33,7 +33,7 @@ public class TimeDAO {
         );
     }
 
-    public void delete(int id) {
+    public void deleteById(int id) {
         jdbcTemplate.update("DELETE FROM time WHERE id = ?", id);
     }
 
