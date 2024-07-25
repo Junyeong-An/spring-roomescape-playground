@@ -20,5 +20,4 @@ public class Time {
     public int getId() {
         return id;
     }
-
 }

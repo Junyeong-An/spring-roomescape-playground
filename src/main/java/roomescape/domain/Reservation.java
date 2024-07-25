@@ -2,7 +2,6 @@ package roomescape.domain;
 
 public class Reservation {
     private int id;
-
     private String name;
     private String date;
     private Time time;
@@ -29,6 +28,4 @@ public class Reservation {
     public Time getTime() {
         return time;
     }
-
-
 }

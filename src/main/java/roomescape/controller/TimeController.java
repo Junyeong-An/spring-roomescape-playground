@@ -26,7 +26,6 @@ public class TimeController {
     }
 
     @PostMapping
-    @ResponseBody
     public ResponseEntity<TimeResDto> addTime(@RequestBody TimeDto timeDto) {
         TimeResDto timeResDto = timeService.addTime(timeDto);
         HttpHeaders headers = createHeader("/times/" + timeResDto.id());
